@@ -1,32 +1,52 @@
 import re
+file_name = "Input4.txt"
+def xmas_search():
 
-with open("Input4.txt", "r") as file:
-    lines = file.readlines()
+    with open("Input4.txt", "r") as file:
+        lines = file.readlines()
+
+    pattern = r'XMAS'
+    pattern2 = r'SAMX'
+
+    cnt = 0
+    horizontal = []
+    vertical = []
+    diagonal_arr = []
+
+    #horicontally
+    for line in lines:
+        matches = re.findall(pattern, line)
+        horizontal.extend(matches)
+        matches = re.findall(pattern2, line)
+        horizontal.extend(matches)
+    cnt += len(horizontal)
 
 
-pattern = r'XMAS|SAMX'
-cnt = 0
-horizontal = []
-vertical = []
-diagonal_arr = []
+    #vertically
+    columns = [''.join(line[i] for line in lines) for i in range(len(lines[0]))]
+    for column in columns:
+        matches = re.findall(pattern, column)
+        vertical.extend(matches)
+        matches = re.findall(pattern2, column)
+        vertical.extend(matches)
+    cnt += len(vertical)
 
-#horicontally
-for line in lines:
-    matches = re.findall(pattern, line)
-    horizontal.extend(matches)
-cnt += len(horizontal)
+    #diagonally
+    grid = [list(line) for line in lines]
+    rows, cols = len(grid), len(grid[0])
 
+    main_diagonals = get_main_diagonals(grid, rows, cols)
+    anti_diagonals = get_anti_diagonals(grid, rows, cols)
+    diagonals = main_diagonals + anti_diagonals
 
-#vertically
-columns = [''.join(line[i] for line in lines) for i in range(len(lines[0]))]
-for column in columns:
-    matches = re.findall(pattern, column)
-    vertical.extend(matches)
-cnt += len(vertical)
+    for diagonal in diagonals:
+        matches = re.findall(pattern, diagonal)
+        diagonal_arr.extend(matches)
+        matches = re.findall(pattern2, diagonal)
+        diagonal_arr.extend(matches)
 
-#diagonally
-grid = [list(line) for line in lines]
-rows, cols = len(grid), len(grid[0])
+    cnt += len(diagonal_arr)
+    return cnt
 
 # Function to extract all diagonals (top-left to bottom-right)
 def get_main_diagonals(grid, rows, cols):
@@ -54,14 +74,20 @@ def get_anti_diagonals(grid, rows, cols):
         diagonals.append(''.join(diagonal))
     return diagonals
 
-main_diagonals = get_main_diagonals(grid, rows, cols)
-anti_diagonals = get_anti_diagonals(grid, rows, cols)
-diagonals = main_diagonals + anti_diagonals
+def task_2():
+    # Specify the number of characters per row
+    chars_per_row = 141
 
-for diagonal in diagonals:
-    matches = re.findall(pattern, diagonal)
-    diagonal_arr.extend(matches)
-cnt += len(diagonal_arr)
+    with open(file_name, 'r') as file:
+        text = file.read().strip()
+
+    array_2d = [list(text[i:i + chars_per_row]) for i in range(0, len(text), chars_per_row)]
+    for row in array_2d:
+        for i in range(len(row)-2):
+            if row[i] == "M":
+                if row[i+2] == "S":
+
+                elif row[i+2] == "M":
 
 
-print(cnt)
+task_2()
