@@ -82,12 +82,29 @@ def task_2():
         text = file.read().strip()
 
     array_2d = [list(text[i:i + chars_per_row]) for i in range(0, len(text), chars_per_row)]
-    for row in array_2d:
-        for i in range(len(row)-2):
-            if row[i] == "M":
-                if row[i+2] == "S":
+    copy = array_2d.copy()
+    cnt = 0
+    n = 0
+    i = 0
+    while i < (len(array_2d) - 2):
+        while n < (len(array_2d[i]) - 2):
+            if array_2d[i][n] == "M":
+                if array_2d[i][n + 2] == "S" and array_2d[i + 1][n + 1] == "A" and array_2d[i + 2][n] == "M" and \
+                        array_2d[i + 2][n + 2] == "S":
+                    cnt += 1
+                elif array_2d[i][n +2] == "M" and array_2d[i + 1][n + 1] == "A" and array_2d[i + 2][n] == \
+                        array_2d[i + 2][n + 2] == "S":
+                    #print(array_2d[i][n + 2], array_2d[i + 1][n + 1], array_2d[i + 2][n], array_2d[i + 2][n + 2])
+                    cnt += 1
+            elif array_2d[i][n] == "S":
+                if array_2d[i][n + 2] == "S" and array_2d[i + 1][n + 1] == "A" and array_2d[i + 2][n] == "M" == \
+                        array_2d[i + 2][n + 2]:
+                    cnt += 1
+                elif array_2d[i][n +2] == "M" and array_2d[i + 1][n + 1] == "A" and array_2d[i + 2][n] == "M" and \
+                        array_2d[i + 2][n + 2] == "S":
+                    cnt += 1
+            n += 1
+        i += 1
+    return cnt
 
-                elif row[i+2] == "M":
-
-
-task_2()
+print(task_2())
