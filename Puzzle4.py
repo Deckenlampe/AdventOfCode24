@@ -15,6 +15,7 @@ def xmas_search():
 
     #horicontally
     for line in lines:
+        print(len(line))
         matches = re.findall(pattern, line)
         horizontal.extend(matches)
         matches = re.findall(pattern2, line)
@@ -77,15 +78,14 @@ def get_anti_diagonals(grid, rows, cols):
 def task_2():
     # Specify the number of characters per row
     chars_per_row = 141
-
     with open(file_name, 'r') as file:
         text = file.read().strip()
-
+    print(len(text))
     array_2d = [list(text[i:i + chars_per_row]) for i in range(0, len(text), chars_per_row)]
-    copy = array_2d.copy()
     cnt = 0
     n = 0
     i = 0
+
     while i < (len(array_2d) - 2):
         while n < (len(array_2d[i]) - 2):
             if array_2d[i][n] == "M":
