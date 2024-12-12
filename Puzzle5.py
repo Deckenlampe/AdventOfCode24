@@ -23,6 +23,18 @@ def task_1():
 
 array1, array2 = task_1()
 
+correct = True
+cnt = 0
+
 for i in range(len(array2)):
-    for n in range(len(array1)):
+    for j in range(len(array2[i])):
+        for k in range(len(array2[i])):
+            for n in range(len(array1)):
+                if array1[n][0] == array2[i][j] and array1[n][1] == array2[i][k]:
+                    correct = False
+                    break
+    if correct:
+        cnt += 1
+
+print(cnt)
 
