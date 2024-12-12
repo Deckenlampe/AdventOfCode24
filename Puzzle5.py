@@ -1,3 +1,5 @@
+import math
+
 filename = "Input5.txt"
 with open(filename, 'r') as file:
     lines = file.readlines()
@@ -21,20 +23,39 @@ def task_1():
     array2 = [list(map(int, line.split(','))) for line in array2 if line]  # Convert to integers
     return array1, array2
 
-array1, array2 = task_1()
+rules, pattern = task_1()
 
 correct = True
 cnt = 0
-
-for i in range(len(array2)):
-    for j in range(len(array2[i])):
-        for k in range(len(array2[i])):
-            for n in range(len(array1)):
-                if array1[n][0] == array2[i][j] and array1[n][1] == array2[i][k]:
-                    correct = False
+index = 0
+def correct_pattern():
+    incorrect = []
+    cnt = 0
+    for i in range(len(pattern)):
+        correct = True
+        for j in range(len(pattern[i])):
+            for k in range(len(pattern[i])):
+                for rule in rules:
+                    if rule[0] == pattern[i][k] and rule[1] == pattern[i][j] and k > j:
+                        correct = False
+                        incorrect.append(pattern[i])
+                        break
+                if not correct:
                     break
-    if correct:
-        cnt += 1
+            if not correct:
+                break
+        if correct:
+            index = math.ceil((len(pattern[i])) / 2) - 1
+            cnt += (pattern[i][index])
+    return(cnt, incorrect)
 
-print(cnt)
+cnt, incorrect = correct_pattern()
 
+print(incorrect)
+
+def incorrect_pattern():
+    for i in range(len(incorrect)):
+        for j in range(len(incorrect[i])):
+            for k in range(len(pattern[i])):
+                for rule in rules:
+                    # von vorne nach HInten aufbauen oder von hinten nach Vorne?
