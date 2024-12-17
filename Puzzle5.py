@@ -4,6 +4,7 @@ filename = "Input5.txt"
 with open(filename, 'r') as file:
     lines = file.readlines()
 
+
 def task_1():
     array1 = []
     array2 = []
@@ -23,11 +24,10 @@ def task_1():
     array2 = [list(map(int, line.split(','))) for line in array2 if line]  # Convert to integers
     return array1, array2
 
+
 rules, pattern = task_1()
 
-correct = True
-cnt = 0
-index = 0
+
 def correct_pattern():
     incorrect = []
     cnt = 0
@@ -47,15 +47,58 @@ def correct_pattern():
         if correct:
             index = math.ceil((len(pattern[i])) / 2) - 1
             cnt += (pattern[i][index])
-    return(cnt, incorrect)
+    return cnt, incorrect
+
 
 cnt, incorrect = correct_pattern()
+print(cnt)
 
-print(incorrect)
 
-def incorrect_pattern():
-    for i in range(len(incorrect)):
-        for j in range(len(incorrect[i])):
-            for k in range(len(pattern[i])):
-                for rule in rules:
-                    # von vorne nach HInten aufbauen oder von hinten nach Vorne?
+def find_before(pattern, rules, anchor):
+    before = []
+    for i in range(len(pattern)):
+        for rule in rules:
+            if rule[0] == pattern[i] and rule[1] == anchor:
+                before.append(pattern[i])
+                break
+    return before
+
+
+def find_after(pattern, rules, anchor):
+    after = []
+    rule_found = False
+    for i in range(len(pattern)):
+        rule_found = False
+        for rule in rules:
+            if rule[0] == pattern[i] and rule[1] == anchor:
+                rule_found = True
+                break
+        if rule_found == False and anchor != pattern[i]:
+            after.append(pattern[i])
+    return after
+
+
+def sorting(pattern, rules):
+    if len(pattern) <= 1:
+        return pattern
+
+    anchor = pattern[0]
+
+    before = find_before(pattern, rules, anchor)
+    middle = [anchor]
+    after = find_after(pattern, rules, anchor)
+
+    return sorting(before, rules) + middle + sorting(after, rules)
+
+
+def return_middle_sum(pattern, rules):
+    sum = 0
+    for i in range(len(pattern)):
+        sorted = []
+        sorted = sorting(pattern[i], rules)
+        index = math.ceil((len(sorted)) / 2) - 1
+        sum += (sorted[index])
+    return sum
+
+
+print(return_middle_sum(incorrect, rules))
