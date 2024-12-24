@@ -1,5 +1,11 @@
 import re
 file_name = "Input4.txt"
+
+map_array = []
+with open(file_name, 'r') as file:
+    for line in file:
+        map_array.append(list(line.strip()))
+
 def xmas_search():
 
     with open("Input4.txt", "r") as file:
@@ -107,4 +113,52 @@ def task_2():
         i += 1
     return cnt
 
-print(task_2())
+def check_letter(x, y, letter, map):
+    if x < 0 or x >= len(map):
+        return False
+    elif y < 0 or y >= len(map[x]):
+        return False
+    elif letter == map[x][y]:
+        return True
+    return False
+
+def mas_search(map):
+    cnt = 0
+    for i in range(len(map)):
+        for j in range(len(map[i])):
+            if check_letter(i, j, "A", map):
+                """ 
+                    M.M
+                    .A.
+                    S.S
+                """
+                if check_letter(i - 1, j - 1, "M", map) and check_letter(i - 1, j + 1, "M", map) \
+                    and check_letter(i + 1, j - 1, "S", map) and check_letter(i + 1, j + 1, "S", map):
+                    cnt += 1
+                """
+                    S.S
+                    .A:
+                    M.M
+                """
+                if check_letter(i - 1, j - 1, "S", map) and check_letter(i - 1, j + 1, "S", map) \
+                        and check_letter(i + 1, j - 1, "M", map) and check_letter(i + 1, j + 1, "M", map):
+                    cnt += 1
+                """
+                    S.M
+                    .A.
+                    S.M
+                """
+                if check_letter(i - 1, j - 1, "S", map) and check_letter(i - 1, j + 1, "M", map) \
+                        and check_letter(i + 1, j - 1, "S", map) and check_letter(i + 1, j + 1, "M", map):
+                    cnt += 1
+                """
+                    M.S
+                    .A.
+                    M.S
+                """
+                if check_letter(i - 1, j - 1, "M", map) and check_letter(i - 1, j + 1, "S", map) \
+                        and check_letter(i + 1, j - 1, "M", map) and check_letter(i + 1, j + 1, "S", map):
+                    cnt += 1
+    return cnt
+
+print(mas_search(map_array))
